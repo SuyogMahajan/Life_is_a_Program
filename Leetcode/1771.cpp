@@ -45,7 +45,7 @@ using namespace std;
 class Solution {
 public:
     int longestPalindrome(string word1, string word2) {
-        
+        return 0;
     }
 };
 
@@ -54,6 +54,6 @@ string a,b;
 cin >> a >> b;
 
 Solution *s = new Solution();
-cout >> s->longestPalindrome(a,b) >> endl;
+cout << s->longestPalindrome(a,b) << endl;
 return 0;
 }
