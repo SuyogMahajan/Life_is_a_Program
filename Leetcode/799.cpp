@@ -26,10 +26,10 @@ public:
 
             i++;
         }
-        for(auto x:ans){
-             for(auto y:x) cout << y<<" ";
+        // for(auto x:ans){
+        //      for(auto y:x) cout << y<<" ";
 
-             cout << endl;}
+        //      cout << endl;}
         return ans[ti][tj];
     }
 };
