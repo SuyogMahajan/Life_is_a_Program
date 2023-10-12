@@ -21,7 +21,7 @@ class company{
 
 };
 
-class student :public company {
+class student : public company {
 
     public:
     string name;
@@ -41,4 +41,7 @@ class student :public company {
         salary = sal;
     }
 
+    void print() {
+        cout << name <<" " << cname <<" "<<role << " " << roll_no << " " <<salary << endl;
+    }
 };
