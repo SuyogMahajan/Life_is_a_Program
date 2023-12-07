@@ -1,63 +1,75 @@
-#include<iostream>
-#include<vector>
-#include<queue>
-
+#include <iostream>
 using namespace std;
 
-void rec(int i,vector<int>& a,vector<bool> &visited,long long &ans,int k) {
-if( i>= 0 && i < a.size()){
-    // cout <<i << endl;
-    long long smallest_diff = _LONG_LONG_MAX_;
-    int next_ind = i;
-
-    for(int j = i%k;j<a.size();j+=k) {
-        if(!visited[j]){
-            visited[j] = true;
-            if(j+1 < a.size()){
-            int d = abs(a[j+1]-a[j]);
-            if(  smallest_diff >= d && !visited[j+1]  ){
-                smallest_diff = d;
-                next_ind = j+1;
-            }
-            }
-        }
+class Node {
+public:
+    bool val;
+    bool isLeaf;
+    Node* topLeft;
+    Node* topRight;
+    Node* bottomLeft;
+    Node* bottomRight;
+    
+    Node() {
+        val = false;
+        isLeaf = false;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
     }
-
-   if(smallest_diff != _LONG_LONG_MAX_){ 
-    //  cout<< smallest_diff<< endl;
-     ans += smallest_diff;
-   
-   }
-    for(auto x:visited) {
-        if(!x) {
-         rec(next_ind,a,visited,ans,k);
-         break;
-        }
+    
+    Node(bool _val, bool _isLeaf) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = NULL;
+        topRight = NULL;
+        bottomLeft = NULL;
+        bottomRight = NULL;
     }
-}
-}
+    
+    Node(bool _val, bool _isLeaf, Node* _topLeft, Node* _topRight, Node* _bottomLeft, Node* _bottomRight) {
+        val = _val;
+        isLeaf = _isLeaf;
+        topLeft = _topLeft;
+        topRight = _topRight;
+        bottomLeft = _bottomLeft;
+        bottomRight = _bottomRight;
+    }
+};
 
-long long superMovement(int n,vector<int> &a,int k) {
 
-vector<bool> visited(n,false);
-long long ans =0;
+class Solution {
+public:
 
-rec(0,a,visited,ans,k);
+    Node* intersect(Node* root1, Node* root2) {
 
-return ans;
-}
+        if(root1->isLeaf && root1->val) {
+            return root1;
+        }
 
-int main() {
-int n,k;
-cin  >> n>> k;
-vector<int> v;
+        if(root2->isLeaf && root2->val) {
+            return root2;
+        }
+        if(root1->isLeaf && !root1->val) {
+            return root2;
+        }
 
-for(int i = 0;i<n;i++) {
-int x;
-cin >> x;
-v.push_back(x);
-}
+        if(root2->isLeaf && !root2->val) {
+            return root1;
+        }
 
-cout << superMovement(n,v,k) << endl;
-return 0;
-}
+        Node* top_left = intersect(root1->topLeft,root2->topLeft);
+        Node* top_right = intersect(root1->topRight,root2->topRight);
+        Node* bottom_left = intersect(root1->bottomLeft,root2->bottomLeft);
+        Node* bottom_right = intersect(root1->bottomRight,root2->bottomRight);
+
+        if(top_left->val == top_right->val && top_right->val == bottom_left->val &&bottom_left->val == bottom_right->val && top_left->isLeaf &&
+        top_right->isLeaf && bottom_left->isLeaf && bottom_right->isLeaf
+       ) {
+            return new Node(top_left->val,true);
+        }
+
+            return new Node(false,false,top_left,top_right,bottom_left,bottom_right);
+    }
+};
